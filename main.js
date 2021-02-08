@@ -28,11 +28,11 @@ var gl = GL.create();
 var water;
 var cubemap;
 var renderer;
-var angleX = -25;
-var angleY = -200.5;
+var angleX = -30;
+var angleY = -140;
 
 // Sphere physics info
-var useSpherePhysics = false;
+var useSpherePhysics = true;
 var center;
 var oldCenter;
 var velocity;
@@ -40,13 +40,19 @@ var gravity;
 var radius;
 var paused = false;
 
-window.onload = function() {
+window.onload = function () {
   var ratio = window.devicePixelRatio || 1;
   var help = document.getElementById('help');
 
   function onresize() {
-    var width = innerWidth - help.clientWidth - 20;
-    var height = innerHeight;
+    var width, height;
+    if(innerWidth > 800){
+      width = innerWidth - help.clientWidth - 20;
+      height = innerHeight;
+    } else {
+      width=innerWidth
+      height=innerHeight-help.clientHeight - 20;
+    }
     gl.canvas.width = width * ratio;
     gl.canvas.height = height * ratio;
     gl.canvas.style.width = width + 'px';
@@ -92,7 +98,7 @@ window.onload = function() {
   var requestAnimationFrame =
     window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
-    function(callback) { setTimeout(callback, 0); };
+    function (callback) { setTimeout(callback, 0); };
 
   var prevTime = new Date().getTime();
   function animate() {
@@ -182,41 +188,41 @@ window.onload = function() {
     return element === help || element.parentNode && isHelpElement(element.parentNode);
   }
 
-  document.onmousedown = function(e) {
+  document.onmousedown = function (e) {
     if (!isHelpElement(e.target)) {
       e.preventDefault();
       startDrag(e.pageX, e.pageY);
     }
   };
 
-  document.onmousemove = function(e) {
+  document.onmousemove = function (e) {
     duringDrag(e.pageX, e.pageY);
   };
 
-  document.onmouseup = function() {
+  document.onmouseup = function () {
     stopDrag();
   };
 
-  document.ontouchstart = function(e) {
+  document.ontouchstart = function (e) {
     if (e.touches.length === 1 && !isHelpElement(e.target)) {
       e.preventDefault();
       startDrag(e.touches[0].pageX, e.touches[0].pageY);
     }
   };
 
-  document.ontouchmove = function(e) {
+  document.ontouchmove = function (e) {
     if (e.touches.length === 1) {
       duringDrag(e.touches[0].pageX, e.touches[0].pageY);
     }
   };
 
-  document.ontouchend = function(e) {
+  document.ontouchend = function (e) {
     if (e.touches.length == 0) {
       stopDrag();
     }
   };
 
-  document.onkeydown = function(e) {
+  document.onkeydown = function (e) {
     if (e.which == ' '.charCodeAt(0)) paused = !paused;
     else if (e.which == 'G'.charCodeAt(0)) useSpherePhysics = !useSpherePhysics;
     else if (e.which == 'L'.charCodeAt(0) && paused) draw();
@@ -278,4 +284,16 @@ window.onload = function() {
     renderer.renderSphere();
     gl.disable(gl.DEPTH_TEST);
   }
+  /*
+  startDrag()
+  let iteration = 0;
+  let timer = setInterval(() => {
+    if (iteration == 100) {
+      stopDrag()
+      clearInterval(timer)
+    }
+    //duringDrag(100, iteration * 100);
+    iteration++;
+  }, 100)
+  */
 };

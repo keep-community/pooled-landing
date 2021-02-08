@@ -1,3 +1,5 @@
-# WebGL Water Demo
+Forked from https://github.com/evanw/webgl-water
 
-http://madebyevan.com/webgl-water/
+```
+bash start.sh
+```
